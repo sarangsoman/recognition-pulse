@@ -15,6 +15,8 @@ h1{font:600 26px/1.2 "Space Grotesk",Inter,system-ui,sans-serif;margin:0 0 4px;t
 .badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;background:var(--warnbg);color:var(--warn);padding:2px 8px;border-radius:99px;margin-bottom:10px}
 .bar{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:16px 0}
 label{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
+.aitoggle{display:flex;gap:8px;align-items:center;margin-top:8px;cursor:pointer}
+.aitoggle input{width:auto}
 select,input,textarea,button{font:inherit;color:inherit}
 select,input[type=text],textarea{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
 select{min-width:260px;max-width:100%}
@@ -79,7 +81,7 @@ a{color:var(--accent)}
       <li><b>Peers recognised them, you haven't</b>: 2 or more peer recognitions in 90 days and none from you.</li>
       <li><b>Silent</b>: no recognition from anyone for 30+ days (45+ is marked urgent).</li>
       <li><b>Birthday</b> within 7 days: a light-touch note.</li>
-      <li>The AI sees only first name, level, the reason, years at company, the value they showed and your optional note. It is told not to invent facts. If it is unavailable, a template is used.</li>
+      <li>The AI sees only first name, level, the reason, years at company, the value they showed and your optional note. It is told not to invent facts. Claude drafting is off until you tick \u201cUse Claude to draft\u201d (it uses a small amount of hosting credit per draft). Otherwise, or if it is unavailable, a template is used.</li>
     </ul>
   </details>
 
@@ -91,7 +93,7 @@ a{color:var(--accent)}
 (function () {
   var D = window.DESK_DATA, teams = D.teams;
   var $ = function (id) { return document.getElementById(id); };
-  var state = { team: null, all: false, drafted: 0, edited: 0, sent: 0, done: {} };
+  var state = { team: null, all: false, drafted: 0, edited: 0, sent: 0, done: {}, useAI: false };
 
   var sel = $('team');
   teams.forEach(function (t, i) {
@@ -176,26 +178,30 @@ a{color:var(--accent)}
       '<div class="cols"><div><label>Tone</label><select class="tone"><option value="warm">Warm</option><option value="brief">Brief</option></select></div>' +
       '<div><label>One thing you noticed (optional)</label><input type="text" class="note" maxlength="200" placeholder="e.g. stayed late to fix the release"></div></div>' +
       '<label style="margin-top:8px">Message (edit freely)</label><textarea class="msg" aria-label="Draft message"></textarea>' +
+      '<label class="aitoggle"><input type="checkbox" class="ai"> Use Claude to draft (optional)</label>' +
       '<div class="row"><button class="regen">Redraft</button><button class="primary send">Send (demo)</button><span class="src"></span></div>';
     el.appendChild(wrap);
     var tone = wrap.querySelector('.tone'), note = wrap.querySelector('.note'), msg = wrap.querySelector('.msg'),
-        src = wrap.querySelector('.src'), regen = wrap.querySelector('.regen'), send = wrap.querySelector('.send');
+        ai = wrap.querySelector('.ai'), src = wrap.querySelector('.src'), regen = wrap.querySelector('.regen'), send = wrap.querySelector('.send');
     var original = '';
 
+    ai.checked = state.useAI;
+    function template_draft() {
+      var t = template(d.main, m, tone.value);
+      if (note.value.trim()) t += ' ' + note.value.trim().replace(/^./, function (c) { return c.toUpperCase(); }) + (/[.!?]$/.test(note.value.trim()) ? '' : '.');
+      done(t, state.useAI ? 'Template (AI unavailable)' : 'Template draft');
+    }
     function draft() {
+      if (!state.useAI) { template_draft(); return; }
       regen.disabled = send.disabled = true; src.textContent = 'Drafting…';
       var facts = { first: first(m.name), level: m.level, years: m.years, topValue: m.top_value, received: m.received_90d, daysSince: m.days_since, note: note.value.trim() };
       fetch('/api/draft', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reason: d.main, tone: tone.value, facts: facts }) })
         .then(function (r) { if (!r.ok) throw new Error('ai'); return r.json(); })
         .then(function (j) { done(j.draft, 'Drafted by Claude · check before sending'); })
-        .catch(function () {
-          var t = template(d.main, m, tone.value);
-          if (note.value.trim()) t += ' ' + note.value.trim().replace(/^./, function (c) { return c.toUpperCase(); }) + (/[.!?]$/.test(note.value.trim()) ? '' : '.');
-          done(t, 'Template (AI unavailable)');
-        });
+        .catch(template_draft);
     }
     function done(text, label) { msg.value = text; original = text; src.textContent = label; regen.disabled = send.disabled = false; state.drafted++; stats(); }
-    regen.onclick = draft; tone.onchange = draft;
+    regen.onclick = draft; tone.onchange = draft; ai.onchange = function () { state.useAI = ai.checked; draft(); };
     send.onclick = function () {
       state.sent++; if (msg.value.trim() !== original.trim()) state.edited++;
       state.done[m.id] = true; stats(); render();

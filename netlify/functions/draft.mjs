@@ -58,5 +58,5 @@ export default async (req) => {
 export const config = {
   path: '/api/draft',
   method: 'POST',
-  rateLimit: { action: 'rate_limit', aggregateBy: ['ip', 'domain'], windowSize: 60, windowLimit: 12 },
+  rateLimit: { action: 'rate_limit', aggregateBy: ['ip', 'domain'], windowSize: 60, windowLimit: 5 },
 };
