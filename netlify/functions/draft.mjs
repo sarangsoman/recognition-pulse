@@ -27,26 +27,32 @@ export default async (req) => {
   };
   const tone = TONES[body.tone] ?? TONES.warm;
 
-  try {
-    const client = new Anthropic();
-    const res = await client.messages.create({
-      model: 'claude-sonnet-5-5',
-      max_tokens: 200,
-      system:
-        'You write short recognition messages that a manager sends to a team member. ' +
-        'Rules: 2 to 3 sentences, under 50 words, plain workplace English, no emojis, no hashtags, no greeting like "Dear". ' +
-        'Use ONLY the facts provided. Never invent projects, results, numbers or events. ' +
-        'If manager_note is present, build the message around it. ' +
-        'Do not mention days since last recognition or that data was analysed. ' +
-        'Return only the message text.',
-      messages: [{ role: 'user', content: `Tone: ${tone}.\nFacts (JSON): ${JSON.stringify(facts)}` }],
-    });
-    const text = res.content.filter((b) => b.type === 'text').map((b) => b.text).join('').trim();
-    if (!text) return Response.json({ error: 'empty' }, { status: 502 });
-    return Response.json({ draft: text.slice(0, 600), source: 'ai' });
-  } catch (e) {
-    return Response.json({ error: 'ai-failed' }, { status: 502 });
+  const client = new Anthropic();
+  const MODELS = ['claude-sonnet-5-5', 'claude-haiku-5-5', 'claude-sonnet-4-5'];
+  let lastErr;
+  for (const model of MODELS) {
+    try {
+      const res = await client.messages.create({
+        model,
+        max_tokens: 200,
+        system:
+          'You write short recognition messages that a manager sends to a team member. ' +
+          'Rules: 2 to 3 sentences, under 50 words, plain workplace English, no emojis, no hashtags, no greeting like "Dear". ' +
+          'Use ONLY the facts provided. Never invent projects, results, numbers or events. ' +
+          'If manager_note is present, build the message around it. ' +
+          'Do not mention days since last recognition or that data was analysed. ' +
+          'Return only the message text.',
+        messages: [{ role: 'user', content: `Tone: ${tone}.\nFacts (JSON): ${JSON.stringify(facts)}` }],
+      });
+      const text = res.content.filter((b) => b.type === 'text').map((b) => b.text).join('').trim();
+      if (!text) throw new Error('empty response');
+      return Response.json({ draft: text.slice(0, 600), source: 'ai', model });
+    } catch (e) {
+      lastErr = e;
+      console.error('draft failed', model, e?.status, String(e?.message ?? e).slice(0, 300));
+    }
   }
+  return Response.json({ error: 'ai-failed', status: lastErr?.status ?? null }, { status: 502 });
 };
 
 export const config = {
