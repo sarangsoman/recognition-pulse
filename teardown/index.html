@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Empuls Growth Teardown</title><meta name="description" content="Outside-in growth teardown of Empuls (Xoxoday): likely drop-offs, what it already does with AI and HRMS sync, and three experiments."><style>:root{--bg:#f6f7f9;--card:#fff;--fg:#14171c;--mute:#5b6470;--line:#e3e6ea;--accent:#2a62d6;--soft:#eaf0fc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1318;--card:#171c23;--fg:#e8ebef;--mute:#9aa4b1;--line:#2a313b;--accent:#6f9cf5;--soft:#1b2740;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1318;--card:#171c23;--fg:#e8ebef;--mute:#9aa4b1;--line:#2a313b;--accent:#6f9cf5;--soft:#1b2740;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Inter,system-ui,-apple-system,Segoe UI,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+main{max-width:900px;margin:0 auto}
+h1{font:600 30px/1.2 "Space Grotesk",Inter,system-ui,sans-serif;margin:0 0 6px;text-wrap:balance}
+h2{font:600 21px/1.3 "Space Grotesk",Inter,system-ui,sans-serif;margin:32px 0 8px;text-wrap:balance}
+p{max-width:70ch}
+.meta{color:var(--mute);font-size:14px;margin:0 0 16px}
+a{color:var(--accent)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:640px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+li{margin:0 0 6px;max-width:70ch}
+nav a{margin-right:14px;font-size:14px}
+</style></head><body><main>
+<nav><a href="/">Portfolio</a><a href="/dashboard/">Dashboard</a><a href="/assistant/">Recognition Desk</a></nav>
+<h1>Empuls: outside-in growth teardown</h1>
+<p class="meta">Sarang Soman · 17 Nov 2026 · built only from public sources</p>
+<p>Empuls already ships AI nudges for recognition, so the open growth question is whether managers and employees act on them. The three experiments below target first use and repeat use, built only from public sources.</p>
+
+<h2>Where users likely drop off</h2>
+<p>The likely leaks sit after the sale: an admin launches the program, but employees and managers must keep using it. The leak column is my hypothesis from public material, not Empuls data.</p>
+<div class="tw"><table>
+<tr><th>Stage</th><th>What Empuls does (public sources)</th><th>Likely leak (hypothesis)</th><th>Metric to watch</th></tr>
+<tr><td>1. Launch</td><td>Xoxoday says about 80% of enterprises roll it out company-wide (<a href="https://intercom.help/empuls/en/articles/12252269-overview">Empuls overview</a>)</td><td>Launch-week spike, then fade</td><td>Weekly active recognisers, % of employees</td></tr>
+<tr><td>2. Employee sync</td><td>Daily HRMS sync by API or SFTP; new hires invited when their record is created (<a href="https://www.xoxoday.com/empuls-case-studies/how-a-global-enterprise-automated-employee-lifecycle-engagement-with-workday-integration">Workday case study</a>)</td><td>Invited but never log in</td><td>Invite-to-first-login rate</td></tr>
+<tr><td>3. First recognition</td><td>Recognition inside Slack and Teams (<a href="https://xoxoday.com/empuls/integrations">integrations</a>)</td><td>New users do not know whom to recognise or what to write</td><td>% of invited users who send or get a recognition in 7 days</td></tr>
+<tr><td>4. Manager habit</td><td>Nudges to log weekly wins, reminders for managers (<a href="https://intercom.help/empuls/en/articles/12329955-ai-settings-faqs">AI settings FAQ</a>)</td><td>Managers ignore nudges, so coverage is uneven</td><td>% of managers recognising weekly, % of team recognised in 30 days</td></tr>
+<tr><td>5. Redemption</td><td>Points redeemed from the Xoxoday rewards catalogue (<a href="https://www.trustradius.com/products/xoxoday-empuls">TrustRadius</a>)</td><td>Some Capterra reviewers mention slow delivery (one says 7 days) and mobile issues (<a href="https://www.capterra.com/p/153149/Rewards-Platform/reviews/">Capterra</a>)</td><td>Time to first redemption, redemption rate</td></tr>
+<tr><td>6. Renewal</td><td>Admin data on which awards are popular, with ROI measurement (<a href="https://thepeoplemanagement.com/?p=2830">Xoxoday CEO post</a>)</td><td>Admin cannot show impact to leadership</td><td>Participation by team, renewal</td></tr>
+</table></div>
+<p>The review points are single-user comments, so they are signals to test, not proof.</p>
+
+<h2>What Empuls already does with AI and HRMS sync</h2>
+<p>Empuls has an AI assistant called Em, so a new AI feature alone is not a differentiator. The work is making the nudges convert.</p>
+<ul>
+<li><b>Copilot in the dashboard:</b> managers can ask which team members have not been recognised in the last 30 days, get suggested recognition messages and send awards (<a href="https://help-empuls.xoxoday.com/admin/ai/empuls-copilot">Copilot help</a>).</li>
+<li><b>Nudges and next-best actions:</b> Em prompts employees to log weekly wins and tells managers whom to recognise and where recognition gaps are (<a href="https://intercom.help/empuls/en/articles/12329955-ai-settings-faqs">AI settings FAQ</a>).</li>
+<li><b>Award automation:</b> Em drafts award graphics, subject lines and citations within preset budgets (same FAQ).</li>
+<li><b>HRMS sync:</b> employee data, reporting lines and lifecycle events flow in from systems such as Workday, SuccessFactors and BambooHR, and milestone rewards for birthdays and work anniversaries can run automatically (<a href="https://www.empuls.io/integrations/namely">Empuls HRMS page</a>).</li>
+<li><b>Competitive set:</b> G2 lists Workvivo, Kudos, Vantage Circle, Bonusly and Motivosity as Empuls alternatives (<a href="https://g2.com/products/empuls/competitors/alternatives">G2</a>). One reviewer says Empuls has a wider feature surface than Bonusly or Workhuman, with a product that is still maturing (<a href="https://www.toolsforhumans.ai/ai-tools/empuls">Tools for Humans</a>).</li>
+</ul>
+
+<h2>Three experiments</h2>
+<p>Each test is randomised by team or manager, not by individual, so people in one team do not see different versions. I would run each for at least four weeks and report the lift with a confidence interval.</p>
+<div class="tw"><table>
+<tr><th>#</th><th>Hypothesis</th><th>Change (B vs current A)</th><th>Primary metric</th><th>Guardrail</th></tr>
+<tr><td>1</td><td>Managers act when the nudge names people and needs no dashboard visit</td><td>Weekly Slack or Teams message listing up to 3 teammates not recognised in 30 days, each with a pre-drafted recognition and a send button</td><td>% of managers sending at least 1 recognition within 7 days</td><td>Message edit rate, mute and opt-out rate</td></tr>
+<tr><td>2</td><td>New employees recognise sooner when the first prompt gives them a draft</td><td>In week 1, prompt "thank a teammate who helped you" with a ready draft</td><td>% of invited users sending a first recognition within 7 days</td><td>Opt-out rate, recognition quality</td></tr>
+<tr><td>3</td><td>Redemption rises when users see rewards they can claim right now</td><td>Store shows instant-delivery rewards within the user's balance first</td><td>% of users with points who redeem within 30 days</td><td>Admin budget burn, delivery failures</td></tr>
+</table></div>
+<p>Experiments 1 and 2 build on Em's existing nudges and Copilot, so the question is conversion, not capability. Experiment 3 targets the delivery-delay and mobile complaints in public reviews. I prototyped experiment 1 in <a href="/assistant/">Recognition Desk</a> and analysed a simulated version of it in the <a href="/dashboard/">Recognition Pulse dashboard</a>.</p>
+
+<h2>Metrics and limits</h2>
+<p>I would track four core numbers: participation rate (employees who send or receive at least 1 recognition per month), recognitions per employee per month, manager coverage (share of teams recognised in the last 30 days) and redemption rate. The first two show adoption, the third shows habit, and the fourth shows whether points feel worth earning.</p>
+<p>This is an outside-in view. I have not used Empuls as an admin, I have no usage data, and the leaks above are hypotheses to validate with funnel data. Reviews are individual opinions, and several sources are vendor pages, so read the feature claims as Xoxoday's own description.</p>
+
+<h2>Sources</h2>
+<ul>
+<li><a href="https://intercom.help/empuls/en/articles/12252269-overview">Empuls overview</a> and <a href="https://intercom.help/empuls/en/articles/12329955-ai-settings-faqs">AI settings FAQ</a> (Xoxoday help centre)</li>
+<li><a href="https://help-empuls.xoxoday.com/admin/ai/empuls-copilot">Empuls Copilot help</a> and <a href="https://xoxoday.com/empuls/integrations">integrations</a></li>
+<li><a href="https://www.xoxoday.com/empuls-case-studies/how-a-global-enterprise-automated-employee-lifecycle-engagement-with-workday-integration">Workday integration case study</a> and <a href="https://www.empuls.io/integrations/namely">Empuls HRMS page</a></li>
+<li><a href="https://www.capterra.com/p/153149/Rewards-Platform/reviews/">Capterra reviews</a>, <a href="https://www.trustradius.com/products/xoxoday-empuls">TrustRadius</a>, <a href="https://g2.com/products/empuls/competitors/alternatives">G2 alternatives</a> and <a href="https://www.toolsforhumans.ai/ai-tools/empuls">Tools for Humans</a></li>
+<li><a href="https://thepeoplemanagement.com/?p=2830">Xoxoday CEO post</a></li>
+</ul>
+</main></body></html>

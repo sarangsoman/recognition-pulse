@@ -1,0 +1,265 @@
+redemption_id,date,employee_id,points,reward_category,delivery_type,delivery_days
+X00001,2026-06-10,E0454,300,Wellness,Standard,3
+X00002,2026-06-12,E0394,500,Wellness,Standard,5
+X00003,2026-06-13,E0239,300,Wellness,Standard,4
+X00004,2026-06-16,E0461,300,Merchandise,Standard,8
+X00005,2026-06-17,E0234,300,Gift card,Standard,3
+X00006,2026-06-20,E0087,300,Charity donation,Instant,0
+X00007,2026-06-24,E0007,300,Gift card,Instant,0
+X00008,2026-06-27,E0166,300,Gift card,Instant,0
+X00009,2026-06-28,E0546,300,Merchandise,Standard,5
+X00010,2026-06-29,E0552,300,Gift card,Instant,0
+X00011,2026-06-29,E0562,500,Gift card,Instant,0
+X00012,2026-07-03,E0158,300,Experience,Standard,8
+X00013,2026-07-03,E0204,300,Wellness,Standard,2
+X00014,2026-07-05,E0454,500,Gift card,Instant,0
+X00015,2026-07-07,E0565,300,Gift card,Instant,0
+X00016,2026-07-08,E0567,300,Gift card,Instant,0
+X00017,2026-07-10,E0104,300,Merchandise,Standard,6
+X00018,2026-07-11,E0185,300,Gift card,Standard,4
+X00019,2026-07-14,E0477,500,Experience,Standard,7
+X00020,2026-07-15,E0262,500,Charity donation,Instant,0
+X00021,2026-07-16,E0464,300,Gift card,Instant,0
+X00022,2026-07-16,E0246,300,Merchandise,Standard,6
+X00023,2026-07-17,E0068,300,Merchandise,Standard,3
+X00024,2026-07-19,E0209,500,Gift card,Standard,7
+X00025,2026-07-19,E0403,300,Wellness,Standard,5
+X00026,2026-07-21,E0546,300,Wellness,Standard,4
+X00027,2026-07-22,E0439,500,Experience,Standard,7
+X00028,2026-07-23,E0419,300,Gift card,Instant,0
+X00029,2026-07-24,E0117,300,Gift card,Instant,0
+X00030,2026-07-24,E0219,500,Gift card,Standard,6
+X00031,2026-07-24,E0300,300,Gift card,Instant,0
+X00032,2026-07-25,E0240,500,Gift card,Instant,0
+X00033,2026-07-25,E0522,300,Merchandise,Standard,7
+X00034,2026-07-26,E0479,300,Wellness,Standard,4
+X00035,2026-07-26,E0268,500,Gift card,Instant,0
+X00036,2026-07-29,E0587,500,Gift card,Standard,7
+X00037,2026-07-30,E0555,300,Gift card,Standard,8
+X00038,2026-07-31,E0272,500,Gift card,Standard,6
+X00039,2026-07-31,E0440,500,Gift card,Instant,0
+X00040,2026-08-01,E0220,500,Experience,Standard,6
+X00041,2026-08-01,E0283,300,Gift card,Instant,0
+X00042,2026-08-02,E0129,500,Gift card,Instant,0
+X00043,2026-08-02,E0425,300,Gift card,Instant,0
+X00044,2026-08-02,E0580,500,Merchandise,Standard,7
+X00045,2026-08-04,E0035,300,Merchandise,Standard,7
+X00046,2026-08-04,E0402,750,Merchandise,Standard,7
+X00047,2026-08-05,E0397,500,Gift card,Instant,0
+X00048,2026-08-06,E0107,300,Merchandise,Standard,5
+X00049,2026-08-07,E0178,300,Gift card,Instant,0
+X00050,2026-08-07,E0169,500,Wellness,Standard,5
+X00051,2026-08-07,E0158,300,Gift card,Instant,0
+X00052,2026-08-07,E0143,300,Wellness,Standard,4
+X00053,2026-08-07,E0100,300,Gift card,Instant,0
+X00054,2026-08-09,E0156,300,Gift card,Instant,0
+X00055,2026-08-09,E0239,500,Gift card,Instant,0
+X00056,2026-08-09,E0471,300,Gift card,Instant,0
+X00057,2026-08-10,E0446,300,Charity donation,Standard,3
+X00058,2026-08-11,E0018,300,Charity donation,Standard,6
+X00059,2026-08-12,E0333,300,Gift card,Instant,0
+X00060,2026-08-13,E0454,300,Gift card,Instant,0
+X00061,2026-08-13,E0477,300,Gift card,Instant,0
+X00062,2026-08-14,E0159,500,Gift card,Instant,0
+X00063,2026-08-14,E0181,300,Charity donation,Instant,0
+X00064,2026-08-14,E0434,300,Wellness,Standard,9
+X00065,2026-08-15,E0119,300,Gift card,Instant,0
+X00066,2026-08-16,E0546,300,Gift card,Instant,0
+X00067,2026-08-16,E0544,300,Gift card,Instant,0
+X00068,2026-08-16,E0212,300,Gift card,Standard,5
+X00069,2026-08-16,E0527,500,Merchandise,Standard,10
+X00070,2026-08-17,E0550,300,Gift card,Instant,0
+X00071,2026-08-18,E0500,300,Charity donation,Instant,0
+X00072,2026-08-20,E0009,500,Gift card,Standard,8
+X00073,2026-08-20,E0028,300,Wellness,Standard,2
+X00074,2026-08-20,E0228,300,Gift card,Instant,0
+X00075,2026-08-20,E0234,300,Wellness,Standard,8
+X00076,2026-08-20,E0281,500,Experience,Standard,4
+X00077,2026-08-21,E0461,500,Gift card,Instant,0
+X00078,2026-08-21,E0196,750,Merchandise,Standard,11
+X00079,2026-08-21,E0592,300,Gift card,Instant,0
+X00080,2026-08-22,E0099,300,Gift card,Instant,0
+X00081,2026-08-24,E0561,500,Wellness,Standard,6
+X00082,2026-08-26,E0196,300,Charity donation,Standard,3
+X00083,2026-08-26,E0331,300,Experience,Standard,5
+X00084,2026-08-26,E0567,300,Charity donation,Instant,0
+X00085,2026-08-27,E0025,500,Experience,Standard,7
+X00086,2026-08-28,E0221,300,Gift card,Instant,0
+X00087,2026-08-28,E0413,300,Gift card,Instant,0
+X00088,2026-08-29,E0335,300,Experience,Standard,6
+X00089,2026-08-29,E0022,300,Gift card,Instant,0
+X00090,2026-08-29,E0242,300,Gift card,Instant,0
+X00091,2026-08-30,E0008,500,Gift card,Instant,0
+X00092,2026-08-31,E0283,300,Wellness,Standard,4
+X00093,2026-08-31,E0149,500,Gift card,Instant,0
+X00094,2026-08-31,E0151,300,Gift card,Instant,0
+X00095,2026-09-01,E0111,500,Experience,Standard,8
+X00096,2026-09-02,E0123,750,Merchandise,Standard,7
+X00097,2026-09-02,E0535,500,Experience,Standard,7
+X00098,2026-09-03,E0015,300,Gift card,Instant,0
+X00099,2026-09-03,E0461,750,Experience,Standard,7
+X00100,2026-09-06,E0138,300,Merchandise,Standard,3
+X00101,2026-09-07,E0402,750,Wellness,Standard,2
+X00102,2026-09-07,E0095,300,Gift card,Instant,0
+X00103,2026-09-07,E0106,300,Merchandise,Standard,4
+X00104,2026-09-07,E0229,300,Gift card,Standard,6
+X00105,2026-09-08,E0232,300,Charity donation,Instant,0
+X00106,2026-09-09,E0352,300,Gift card,Instant,0
+X00107,2026-09-09,E0556,500,Gift card,Instant,0
+X00108,2026-09-10,E0401,300,Gift card,Instant,0
+X00109,2026-09-10,E0375,300,Charity donation,Standard,5
+X00110,2026-09-10,E0036,300,Gift card,Instant,0
+X00111,2026-09-11,E0085,300,Charity donation,Instant,0
+X00112,2026-09-11,E0017,500,Experience,Standard,9
+X00113,2026-09-11,E0419,300,Gift card,Standard,6
+X00114,2026-09-11,E0516,300,Experience,Standard,7
+X00115,2026-09-11,E0590,300,Gift card,Instant,0
+X00116,2026-09-12,E0104,500,Gift card,Standard,5
+X00117,2026-09-12,E0193,300,Gift card,Instant,0
+X00118,2026-09-13,E0168,300,Gift card,Standard,3
+X00119,2026-09-13,E0042,300,Gift card,Standard,2
+X00120,2026-09-15,E0388,300,Experience,Standard,7
+X00121,2026-09-15,E0059,300,Merchandise,Standard,8
+X00122,2026-09-16,E0167,300,Gift card,Standard,6
+X00123,2026-09-16,E0155,300,Gift card,Instant,0
+X00124,2026-09-16,E0532,500,Gift card,Instant,0
+X00125,2026-09-16,E0094,300,Merchandise,Standard,7
+X00126,2026-09-18,E0231,300,Wellness,Standard,6
+X00127,2026-09-18,E0236,300,Experience,Standard,8
+X00128,2026-09-18,E0313,300,Merchandise,Standard,5
+X00129,2026-09-19,E0126,300,Gift card,Standard,4
+X00130,2026-09-19,E0184,500,Gift card,Standard,6
+X00131,2026-09-19,E0240,300,Gift card,Instant,0
+X00132,2026-09-19,E0045,300,Gift card,Instant,0
+X00133,2026-09-19,E0128,300,Experience,Standard,6
+X00134,2026-09-19,E0455,500,Gift card,Instant,0
+X00135,2026-09-20,E0592,500,Gift card,Instant,0
+X00136,2026-09-20,E0551,300,Gift card,Instant,0
+X00137,2026-09-20,E0292,300,Gift card,Instant,0
+X00138,2026-09-20,E0221,500,Gift card,Instant,0
+X00139,2026-09-20,E0542,300,Gift card,Instant,0
+X00140,2026-09-21,E0117,750,Charity donation,Instant,0
+X00141,2026-09-22,E0062,300,Experience,Standard,10
+X00142,2026-09-22,E0107,300,Wellness,Standard,4
+X00143,2026-09-22,E0120,300,Gift card,Instant,0
+X00144,2026-09-22,E0184,300,Wellness,Standard,4
+X00145,2026-09-23,E0261,300,Wellness,Standard,2
+X00146,2026-09-23,E0488,500,Wellness,Standard,6
+X00147,2026-09-24,E0414,300,Gift card,Instant,0
+X00148,2026-09-24,E0492,300,Charity donation,Standard,4
+X00149,2026-09-26,E0018,300,Merchandise,Standard,8
+X00150,2026-09-26,E0384,300,Gift card,Instant,0
+X00151,2026-09-27,E0190,300,Gift card,Instant,0
+X00152,2026-09-28,E0159,300,Charity donation,Instant,0
+X00153,2026-09-28,E0313,300,Gift card,Instant,0
+X00154,2026-09-28,E0218,300,Wellness,Standard,2
+X00155,2026-09-28,E0024,300,Gift card,Instant,0
+X00156,2026-09-29,E0055,300,Experience,Standard,8
+X00157,2026-09-29,E0425,300,Charity donation,Instant,0
+X00158,2026-09-29,E0111,500,Gift card,Instant,0
+X00159,2026-09-30,E0147,500,Gift card,Instant,0
+X00160,2026-10-01,E0513,500,Gift card,Instant,0
+X00161,2026-10-03,E0058,300,Gift card,Standard,4
+X00162,2026-10-03,E0418,300,Gift card,Instant,0
+X00163,2026-10-03,E0426,300,Gift card,Instant,0
+X00164,2026-10-05,E0246,500,Gift card,Instant,0
+X00165,2026-10-05,E0418,300,Gift card,Instant,0
+X00166,2026-10-05,E0063,300,Wellness,Standard,3
+X00167,2026-10-05,E0028,300,Gift card,Instant,0
+X00168,2026-10-05,E0014,300,Experience,Standard,12
+X00169,2026-10-05,E0357,500,Merchandise,Standard,4
+X00170,2026-10-06,E0058,750,Gift card,Instant,0
+X00171,2026-10-06,E0024,300,Merchandise,Standard,3
+X00172,2026-10-08,E0410,300,Experience,Standard,3
+X00173,2026-10-08,E0520,300,Merchandise,Standard,5
+X00174,2026-10-09,E0007,300,Wellness,Standard,6
+X00175,2026-10-09,E0326,300,Experience,Standard,9
+X00176,2026-10-09,E0382,300,Experience,Standard,4
+X00177,2026-10-10,E0125,300,Gift card,Instant,0
+X00178,2026-10-10,E0210,500,Merchandise,Standard,4
+X00179,2026-10-10,E0294,300,Experience,Standard,8
+X00180,2026-10-11,E0181,300,Gift card,Instant,0
+X00181,2026-10-12,E0143,750,Gift card,Instant,0
+X00182,2026-10-13,E0453,300,Experience,Standard,9
+X00183,2026-10-14,E0568,300,Gift card,Instant,0
+X00184,2026-10-14,E0418,300,Gift card,Instant,0
+X00185,2026-10-14,E0231,500,Gift card,Instant,0
+X00186,2026-10-15,E0239,750,Gift card,Instant,0
+X00187,2026-10-15,E0228,300,Gift card,Instant,0
+X00188,2026-10-15,E0592,300,Charity donation,Standard,3
+X00189,2026-10-16,E0330,300,Gift card,Instant,0
+X00190,2026-10-16,E0404,300,Merchandise,Standard,7
+X00191,2026-10-17,E0199,500,Gift card,Instant,0
+X00192,2026-10-17,E0035,300,Gift card,Instant,0
+X00193,2026-10-17,E0473,300,Gift card,Instant,0
+X00194,2026-10-18,E0324,500,Experience,Standard,4
+X00195,2026-10-18,E0236,500,Gift card,Instant,0
+X00196,2026-10-19,E0158,300,Gift card,Instant,0
+X00197,2026-10-19,E0442,300,Charity donation,Instant,0
+X00198,2026-10-19,E0028,500,Merchandise,Standard,10
+X00199,2026-10-20,E0484,300,Charity donation,Instant,0
+X00200,2026-10-20,E0217,300,Gift card,Standard,6
+X00201,2026-10-20,E0120,300,Experience,Standard,7
+X00202,2026-10-22,E0472,500,Merchandise,Standard,9
+X00203,2026-10-22,E0498,500,Gift card,Standard,4
+X00204,2026-10-23,E0194,300,Gift card,Instant,0
+X00205,2026-10-23,E0249,300,Gift card,Instant,0
+X00206,2026-10-23,E0126,500,Charity donation,Instant,0
+X00207,2026-10-24,E0250,300,Gift card,Instant,0
+X00208,2026-10-25,E0265,500,Wellness,Standard,4
+X00209,2026-10-25,E0123,300,Charity donation,Instant,0
+X00210,2026-10-26,E0544,300,Charity donation,Instant,0
+X00211,2026-10-26,E0180,300,Wellness,Standard,5
+X00212,2026-10-27,E0391,300,Gift card,Instant,0
+X00213,2026-10-27,E0218,300,Gift card,Instant,0
+X00214,2026-10-27,E0537,300,Gift card,Instant,0
+X00215,2026-10-27,E0137,300,Merchandise,Standard,7
+X00216,2026-10-28,E0105,300,Wellness,Standard,4
+X00217,2026-10-28,E0069,500,Gift card,Instant,0
+X00218,2026-10-28,E0014,300,Merchandise,Standard,3
+X00219,2026-10-28,E0351,300,Merchandise,Standard,7
+X00220,2026-10-28,E0353,300,Gift card,Standard,6
+X00221,2026-10-29,E0473,300,Gift card,Standard,6
+X00222,2026-10-29,E0469,300,Gift card,Instant,0
+X00223,2026-10-30,E0243,300,Merchandise,Standard,9
+X00224,2026-10-31,E0307,300,Merchandise,Standard,8
+X00225,2026-11-01,E0197,300,Wellness,Standard,3
+X00226,2026-11-01,E0036,300,Gift card,Instant,0
+X00227,2026-11-01,E0599,500,Experience,Standard,7
+X00228,2026-11-02,E0133,500,Merchandise,Standard,8
+X00229,2026-11-02,E0404,500,Gift card,Instant,0
+X00230,2026-11-02,E0119,300,Experience,Standard,6
+X00231,2026-11-02,E0407,300,Experience,Standard,8
+X00232,2026-11-03,E0218,300,Gift card,Instant,0
+X00233,2026-11-03,E0185,300,Experience,Standard,10
+X00234,2026-11-03,E0353,300,Gift card,Instant,0
+X00235,2026-11-03,E0100,500,Gift card,Instant,0
+X00236,2026-11-03,E0372,500,Gift card,Instant,0
+X00237,2026-11-04,E0184,1000,Gift card,Instant,0
+X00238,2026-11-04,E0438,300,Gift card,Standard,8
+X00239,2026-11-04,E0238,750,Gift card,Instant,0
+X00240,2026-11-04,E0070,300,Gift card,Instant,0
+X00241,2026-11-04,E0420,300,Gift card,Instant,0
+X00242,2026-11-05,E0117,500,Gift card,Instant,0
+X00243,2026-11-05,E0171,300,Gift card,Instant,0
+X00244,2026-11-05,E0403,300,Experience,Standard,7
+X00245,2026-11-06,E0411,300,Gift card,Instant,0
+X00246,2026-11-06,E0427,500,Gift card,Instant,0
+X00247,2026-11-06,E0451,300,Gift card,Instant,0
+X00248,2026-11-07,E0169,500,Gift card,Standard,8
+X00249,2026-11-08,E0267,300,Gift card,Instant,0
+X00250,2026-11-08,E0545,300,Wellness,Standard,5
+X00251,2026-11-09,E0454,500,Gift card,Instant,0
+X00252,2026-11-09,E0544,300,Gift card,Instant,0
+X00253,2026-11-09,E0292,300,Gift card,Instant,0
+X00254,2026-11-09,E0520,500,Merchandise,Standard,5
+X00255,2026-11-09,E0509,300,Wellness,Standard,3
+X00256,2026-11-10,E0417,500,Gift card,Instant,0
+X00257,2026-11-10,E0556,500,Gift card,Instant,0
+X00258,2026-11-11,E0305,300,Experience,Standard,7
+X00259,2026-11-13,E0542,500,Experience,Standard,8
+X00260,2026-11-14,E0350,300,Gift card,Standard,3
+X00261,2026-11-14,E0561,500,Charity donation,Instant,0
+X00262,2026-11-15,E0358,750,Gift card,Standard,7
+X00263,2026-11-15,E0106,300,Experience,Standard,4
+X00264,2026-11-15,E0407,300,Gift card,Instant,0

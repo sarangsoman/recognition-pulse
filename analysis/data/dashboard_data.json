@@ -1,0 +1,428 @@
+{
+ "asof": "2026-11-15",
+ "kpis": {
+  "employees": 600,
+  "login_rate": 0.808,
+  "participation_30d": 0.637,
+  "manager_coverage_30d": 0.657,
+  "recognised_share_30d": 0.555,
+  "recognitions_total": 4117,
+  "human_recognitions_30d": 558,
+  "redeemers_share": 0.398,
+  "instant_share": 0.515,
+  "avg_standard_delivery_days": 5.8
+ },
+ "weekly": [
+  {
+   "week": "2026-06-01",
+   "recognitions": 58,
+   "active_share": 0.372,
+   "ai_share": 0.0
+  },
+  {
+   "week": "2026-06-08",
+   "recognitions": 196,
+   "active_share": 0.441,
+   "ai_share": 0.0
+  },
+  {
+   "week": "2026-06-15",
+   "recognitions": 189,
+   "active_share": 0.482,
+   "ai_share": 0.0
+  },
+  {
+   "week": "2026-06-22",
+   "recognitions": 218,
+   "active_share": 0.415,
+   "ai_share": 0.0
+  },
+  {
+   "week": "2026-06-29",
+   "recognitions": 209,
+   "active_share": 0.41,
+   "ai_share": 0.0
+  },
+  {
+   "week": "2026-07-06",
+   "recognitions": 189,
+   "active_share": 0.384,
+   "ai_share": 0.0
+  },
+  {
+   "week": "2026-07-13",
+   "recognitions": 147,
+   "active_share": 0.333,
+   "ai_share": 0.0
+  },
+  {
+   "week": "2026-07-20",
+   "recognitions": 173,
+   "active_share": 0.357,
+   "ai_share": 0.0
+  },
+  {
+   "week": "2026-07-27",
+   "recognitions": 158,
+   "active_share": 0.36,
+   "ai_share": 0.342
+  },
+  {
+   "week": "2026-08-03",
+   "recognitions": 151,
+   "active_share": 0.332,
+   "ai_share": 0.331
+  },
+  {
+   "week": "2026-08-10",
+   "recognitions": 141,
+   "active_share": 0.325,
+   "ai_share": 0.376
+  },
+  {
+   "week": "2026-08-17",
+   "recognitions": 123,
+   "active_share": 0.275,
+   "ai_share": 0.285
+  },
+  {
+   "week": "2026-08-24",
+   "recognitions": 137,
+   "active_share": 0.339,
+   "ai_share": 0.365
+  },
+  {
+   "week": "2026-08-31",
+   "recognitions": 137,
+   "active_share": 0.307,
+   "ai_share": 0.292
+  },
+  {
+   "week": "2026-09-07",
+   "recognitions": 157,
+   "active_share": 0.33,
+   "ai_share": 0.395
+  },
+  {
+   "week": "2026-09-14",
+   "recognitions": 132,
+   "active_share": 0.32,
+   "ai_share": 0.303
+  },
+  {
+   "week": "2026-09-21",
+   "recognitions": 141,
+   "active_share": 0.33,
+   "ai_share": 0.362
+  },
+  {
+   "week": "2026-09-28",
+   "recognitions": 145,
+   "active_share": 0.298,
+   "ai_share": 0.434
+  },
+  {
+   "week": "2026-10-05",
+   "recognitions": 132,
+   "active_share": 0.289,
+   "ai_share": 0.417
+  },
+  {
+   "week": "2026-10-12",
+   "recognitions": 138,
+   "active_share": 0.301,
+   "ai_share": 0.355
+  },
+  {
+   "week": "2026-10-19",
+   "recognitions": 124,
+   "active_share": 0.298,
+   "ai_share": 0.306
+  },
+  {
+   "week": "2026-10-26",
+   "recognitions": 147,
+   "active_share": 0.328,
+   "ai_share": 0.354
+  },
+  {
+   "week": "2026-11-02",
+   "recognitions": 142,
+   "active_share": 0.318,
+   "ai_share": 0.366
+  },
+  {
+   "week": "2026-11-09",
+   "recognitions": 136,
+   "active_share": 0.302,
+   "ai_share": 0.279
+  }
+ ],
+ "funnel": [
+  {
+   "stage": "Invited via HRMS sync",
+   "count": 600
+  },
+  {
+   "stage": "Logged in",
+   "count": 485
+  },
+  {
+   "stage": "Sent a first recognition",
+   "count": 289
+  },
+  {
+   "stage": "Redeemed points",
+   "count": 193
+  }
+ ],
+ "funnel_extra": {
+  "sent_within_7d_of_login": 153,
+  "median_days_login_to_first_send": 6.0
+ },
+ "departments": [
+  {
+   "department": "Support",
+   "headcount": 80,
+   "login_rate": 0.675,
+   "participation_30d": 0.438,
+   "manager_weekly_rate": 0.167,
+   "sent_per_head_month": 0.4
+  },
+  {
+   "department": "IT and Legal",
+   "headcount": 30,
+   "login_rate": 0.7,
+   "participation_30d": 0.5,
+   "manager_weekly_rate": 0.25,
+   "sent_per_head_month": 0.47
+  },
+  {
+   "department": "Finance",
+   "headcount": 35,
+   "login_rate": 0.629,
+   "participation_30d": 0.6,
+   "manager_weekly_rate": 0.167,
+   "sent_per_head_month": 0.71
+  },
+  {
+   "department": "Operations",
+   "headcount": 60,
+   "login_rate": 0.783,
+   "participation_30d": 0.617,
+   "manager_weekly_rate": 0.175,
+   "sent_per_head_month": 0.63
+  },
+  {
+   "department": "Engineering",
+   "headcount": 150,
+   "login_rate": 0.807,
+   "participation_30d": 0.647,
+   "manager_weekly_rate": 0.198,
+   "sent_per_head_month": 1.01
+  },
+  {
+   "department": "Product",
+   "headcount": 40,
+   "login_rate": 0.85,
+   "participation_30d": 0.65,
+   "manager_weekly_rate": 0.278,
+   "sent_per_head_month": 1.15
+  },
+  {
+   "department": "HR",
+   "headcount": 25,
+   "login_rate": 0.96,
+   "participation_30d": 0.68,
+   "manager_weekly_rate": 0.444,
+   "sent_per_head_month": 1.28
+  },
+  {
+   "department": "Marketing",
+   "headcount": 50,
+   "login_rate": 0.94,
+   "participation_30d": 0.68,
+   "manager_weekly_rate": 0.167,
+   "sent_per_head_month": 0.88
+  },
+  {
+   "department": "Design",
+   "headcount": 30,
+   "login_rate": 0.867,
+   "participation_30d": 0.733,
+   "manager_weekly_rate": 0.111,
+   "sent_per_head_month": 1.2
+  },
+  {
+   "department": "Sales",
+   "headcount": 100,
+   "login_rate": 0.89,
+   "participation_30d": 0.78,
+   "manager_weekly_rate": 0.242,
+   "sent_per_head_month": 1.4
+  }
+ ],
+ "quiet_teams": [
+  {
+   "team": "ITL-02",
+   "department": "IT and Legal",
+   "headcount": 10,
+   "recognised_30d": 0.1,
+   "manager_sent_30d": false,
+   "variant": "control"
+  },
+  {
+   "team": "ENG-06",
+   "department": "Engineering",
+   "headcount": 9,
+   "recognised_30d": 0.111,
+   "manager_sent_30d": false,
+   "variant": "nudge"
+  },
+  {
+   "team": "ENG-03",
+   "department": "Engineering",
+   "headcount": 9,
+   "recognised_30d": 0.222,
+   "manager_sent_30d": true,
+   "variant": "control"
+  },
+  {
+   "team": "OPE-06",
+   "department": "Operations",
+   "headcount": 8,
+   "recognised_30d": 0.25,
+   "manager_sent_30d": false,
+   "variant": "control"
+  },
+  {
+   "team": "SAL-11",
+   "department": "Sales",
+   "headcount": 9,
+   "recognised_30d": 0.333,
+   "manager_sent_30d": false,
+   "variant": "nudge"
+  },
+  {
+   "team": "SUP-04",
+   "department": "Support",
+   "headcount": 9,
+   "recognised_30d": 0.333,
+   "manager_sent_30d": false,
+   "variant": "nudge"
+  },
+  {
+   "team": "SUP-06",
+   "department": "Support",
+   "headcount": 9,
+   "recognised_30d": 0.333,
+   "manager_sent_30d": false,
+   "variant": "control"
+  },
+  {
+   "team": "SUP-08",
+   "department": "Support",
+   "headcount": 9,
+   "recognised_30d": 0.333,
+   "manager_sent_30d": false,
+   "variant": "nudge"
+  },
+  {
+   "team": "ENG-01",
+   "department": "Engineering",
+   "headcount": 9,
+   "recognised_30d": 0.333,
+   "manager_sent_30d": true,
+   "variant": "nudge"
+  },
+  {
+   "team": "ENG-10",
+   "department": "Engineering",
+   "headcount": 9,
+   "recognised_30d": 0.333,
+   "manager_sent_30d": true,
+   "variant": "control"
+  }
+ ],
+ "inclusion": {
+  "gini": 0.64,
+  "top10_share": 0.449,
+  "never_recognised_share": 0.188
+ },
+ "rewards": [
+  {
+   "category": "Charity donation",
+   "redemptions": 22.0,
+   "avg_delivery_days": 1.09,
+   "instant": 0.73
+  },
+  {
+   "category": "Experience",
+   "redemptions": 34.0,
+   "avg_delivery_days": 7.06,
+   "instant": 0.0
+  },
+  {
+   "category": "Gift card",
+   "redemptions": 146.0,
+   "avg_delivery_days": 0.99,
+   "instant": 0.82
+  },
+  {
+   "category": "Merchandise",
+   "redemptions": 33.0,
+   "avg_delivery_days": 6.45,
+   "instant": 0.0
+  },
+  {
+   "category": "Wellness",
+   "redemptions": 29.0,
+   "avg_delivery_days": 4.28,
+   "instant": 0.0
+  }
+ ],
+ "ab": {
+  "teams": {
+   "control": 33,
+   "nudge": 34
+  },
+  "managers_analysed": 56,
+  "pre": {
+   "control": 0.213,
+   "nudge": 0.176
+  },
+  "post": {
+   "control": 0.181,
+   "nudge": 0.25
+  },
+  "did_pp": 10.6,
+  "ancova_effect_pp": 8.9,
+  "ancova_ci_pp": [
+   1.7,
+   16.0
+  ],
+  "ancova_p": 0.016,
+  "raw_post_diff_pp": 6.9,
+  "raw_p": 0.122,
+  "mde_pp": 12.9,
+  "team_coverage_end": {
+   "control": 0.547,
+   "nudge": 0.562
+  },
+  "message_words_post": {
+   "control": 20.7,
+   "nudge": 19.7
+  }
+ },
+ "ai": {
+  "share_after_launch": 0.349,
+  "words_ai": 27.6,
+  "words_manual": 16.4
+ },
+ "channels": {
+  "Slack": 0.367,
+  "Microsoft Teams": 0.276,
+  "Web": 0.203,
+  "Mobile": 0.154
+ }
+}

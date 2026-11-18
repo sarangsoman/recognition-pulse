@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Recognition Desk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A manager-side recognition assistant prototype on synthetic data. Code decides who is due; AI drafts; the manager edits and sends.">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--fg:#14171c;--mute:#5b6470;--line:#e3e6ea;--accent:#2a62d6;--accent-fg:#fff;--soft:#eaf0fc;--warn:#9a5b00;--warnbg:#fff4e0;--ok:#1d7a46;--okbg:#e5f5ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1318;--card:#171c23;--fg:#e8ebef;--mute:#9aa4b1;--line:#2a313b;--accent:#6f9cf5;--accent-fg:#0b1220;--soft:#1b2740;--warn:#f0b968;--warnbg:#33260f;--ok:#6fd49b;--okbg:#10301f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1318;--card:#171c23;--fg:#e8ebef;--mute:#9aa4b1;--line:#2a313b;--accent:#6f9cf5;--accent-fg:#0b1220;--soft:#1b2740;--warn:#f0b968;--warnbg:#33260f;--ok:#6fd49b;--okbg:#10301f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+main{max-width:860px;margin:0 auto}
+h1{font:600 26px/1.2 "Space Grotesk",Inter,system-ui,sans-serif;margin:0 0 4px;text-wrap:balance}
+.sub{color:var(--mute);margin:0 0 16px;max-width:65ch}
+.badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;background:var(--warnbg);color:var(--warn);padding:2px 8px;border-radius:99px;margin-bottom:10px}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:16px 0}
+label{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
+select,input,textarea,button{font:inherit;color:inherit}
+select,input[type=text],textarea{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+select{min-width:260px;max-width:100%}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0 20px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font:600 22px/1.2 "Space Grotesk",Inter,sans-serif}
+.stat span{font-size:12px;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.card.done{opacity:.65}
+.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.name{font-weight:600}
+.lvl{color:var(--mute);font-size:13px;margin-left:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{font-size:12.5px;background:var(--soft);color:var(--accent);padding:2px 8px;border-radius:99px}
+.chip.hot{background:var(--warnbg);color:var(--warn)}
+.facts{color:var(--mute);font-size:13.5px;margin:0 0 8px}
+button{cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--card);padding:7px 12px;font-weight:500}
+button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+button:disabled{opacity:.55;cursor:default}
+button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.draft{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+textarea{min-height:92px;resize:vertical}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.src{font-size:12.5px;color:var(--mute);margin-left:auto}
+.sent{color:var(--ok);background:var(--okbg);font-size:13px;padding:2px 8px;border-radius:99px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+details{margin:20px 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+summary{cursor:pointer;font-weight:600}
+details ul{margin:8px 0 0;padding-left:20px;color:var(--mute)}
+.foot{color:var(--mute);font-size:13px;margin-top:24px;max-width:70ch}
+a{color:var(--accent)}
+@media (max-width:560px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}select{min-width:0;width:100%}.src{margin-left:0;width:100%}}
+</style>
+
+</head><body>
+<main>
+  <span class="badge">Prototype · synthetic data</span>
+  <h1>Recognition Desk</h1>
+  <p class="sub">An assistant for managers who mean to recognise their team and don't get round to it. Plain rules find who is due. AI drafts the words. You edit and send.</p>
+
+  <div class="bar">
+    <div>
+      <label for="team">Your team</label>
+      <select id="team"></select>
+    </div>
+  </div>
+
+  <div class="stats" aria-live="polite">
+    <div class="stat"><b id="sDue">0</b><span>people due</span></div>
+    <div class="stat"><b id="sDraft">0</b><span>drafts made</span></div>
+    <div class="stat"><b id="sEdit">0</b><span>edited before sending</span></div>
+    <div class="stat"><b id="sSent">0</b><span>sent (demo only)</span></div>
+  </div>
+
+  <div id="list"></div>
+  <p><button id="more" hidden>Show everyone who is due</button></p>
+
+  <details>
+    <summary>How it decides who is due</summary>
+    <ul>
+      <li><b>Work anniversary</b> within 21 days (1 year or more): highest priority.</li>
+      <li><b>Peers recognised them, you haven't</b>: 2 or more peer recognitions in 90 days and none from you.</li>
+      <li><b>Silent</b>: no recognition from anyone for 30+ days (45+ is marked urgent).</li>
+      <li><b>Birthday</b> within 7 days: a light-touch note.</li>
+      <li>The AI sees only first name, level, the reason, years at company, the value they showed and your optional note. It is told not to invent facts. If it is unavailable, a template is used.</li>
+    </ul>
+  </details>
+
+  <p class="foot">All people, teams and dates are synthetic (generated by a script, as of 15 Nov 2026). Nothing is stored and "Send" does not message anyone. Part of <a href="/">Sarang Soman's product portfolio</a>; the same data powers the <a href="/dashboard/">Recognition Pulse dashboard</a>.</p>
+</main>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  var D = window.DESK_DATA, teams = D.teams;
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { team: null, all: false, drafted: 0, edited: 0, sent: 0, done: {} };
+
+  var sel = $('team');
+  teams.forEach(function (t, i) {
+    var o = document.createElement('option');
+    o.value = i; o.textContent = t.team + ' · ' + t.dept + ' · manager ' + t.manager;
+    sel.appendChild(o);
+  });
+  // open on the team with the most people due, so the demo starts rich
+  var best = 0, bestN = -1;
+  teams.forEach(function (t, i) { var n = dueFor(t).length; if (n > bestN) { bestN = n; best = i; } });
+  sel.value = best; state.team = best;
+  sel.onchange = function () { state.team = +sel.value; state.all = false; render(); };
+  $('more').onclick = function () { state.all = true; render(); };
+
+  function first(n) { return n.split(' ')[0]; }
+  function plural(n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); }
+
+  function dueFor(t) {
+    var out = [];
+    t.members.forEach(function (m) {
+      var reasons = [], pri = 9, main = null;
+      function add(code, text, p, hot) { reasons.push({ code: code, text: text, hot: !!hot }); if (p < pri) { pri = p; main = code; } }
+      if (m.anniv_in !== null) add('anniversary', m.years + '-year work anniversary ' + (m.anniv_in === 0 ? 'today' : 'in ' + plural(m.anniv_in, 'day')), 1, m.anniv_in <= 7);
+      if (m.received_90d >= 2 && m.from_mgr_90d === 0) add('peers_not_me', 'Peers recognised them ' + m.received_90d + '× in 90 days, you haven’t', 2);
+      if (m.days_since === null) add('silent', 'Never recognised', 2, true);
+      else if (m.days_since >= 45) add('silent', 'No recognition in ' + m.days_since + ' days', 2, true);
+      else if (m.days_since >= 30) add('silent', 'No recognition in ' + m.days_since + ' days', 3);
+      if (m.bday_in !== null) add('birthday', 'Birthday ' + (m.bday_in === 0 ? 'today' : 'in ' + plural(m.bday_in, 'day')), 4);
+      if (reasons.length) out.push({ m: m, reasons: reasons, pri: pri, main: main });
+    });
+    out.sort(function (a, b) { return a.pri - b.pri || (b.m.days_since === null ? 999 : b.m.days_since) - (a.m.days_since === null ? 999 : a.m.days_since); });
+    return out;
+  }
+
+  function template(main, m, tone) {
+    var f = first(m.name), v = m.top_value ? ' You consistently show ' + m.top_value.toLowerCase() + '.' : '';
+    if (main === 'anniversary') return tone === 'brief' ? 'Happy ' + m.years + '-year anniversary, ' + f + '. Thank you for being part of the team.' : 'Happy ' + m.years + '-year anniversary, ' + f + '!' + v + ' Thank you for everything you bring to the team.';
+    if (main === 'peers_not_me') return tone === 'brief' ? f + ', your teammates have called out your work lately. I want to add my thanks.' : f + ', I’ve seen your teammates recognise you a few times recently' + (m.top_value ? ', mostly for ' + m.top_value.toLowerCase() : '') + '. I want to add my own thanks.';
+    if (main === 'birthday') return 'Happy birthday, ' + f + '! Hope you have a great day.';
+    return tone === 'brief' ? f + ', thank you for your work. It doesn’t go unnoticed.' : f + ', I realised I haven’t said this in a while: thank you for what you do for the team.' + v;
+  }
+
+  function render() {
+    var t = teams[state.team], due = dueFor(t), list = $('list');
+    list.textContent = '';
+    $('sDue').textContent = due.length;
+    var shown = state.all ? due : due.slice(0, 6);
+    $('more').hidden = state.all || due.length <= 6;
+    $('more').textContent = 'Show everyone who is due (' + due.length + ')';
+    if (!due.length) { var p = document.createElement('p'); p.className = 'sub'; p.textContent = 'Nobody on this team is due right now.'; list.appendChild(p); return; }
+    shown.forEach(function (d) { list.appendChild(card(d)); });
+  }
+
+  function card(d) {
+    var m = d.m, el = document.createElement('div');
+    el.className = 'card' + (state.done[m.id] ? ' done' : '');
+    var top = document.createElement('div'); top.className = 'top';
+    var nm = document.createElement('div');
+    var b = document.createElement('span'); b.className = 'name'; b.textContent = m.name;
+    var l = document.createElement('span'); l.className = 'lvl'; l.textContent = m.level + ' · ' + m.dept;
+    nm.appendChild(b); nm.appendChild(l); top.appendChild(nm);
+    var act = document.createElement('div');
+    if (state.done[m.id]) { var s = document.createElement('span'); s.className = 'sent'; s.textContent = 'Sent (demo)'; act.appendChild(s); }
+    else { var btn = document.createElement('button'); btn.className = 'primary'; btn.textContent = 'Draft message'; btn.onclick = function () { btn.disabled = true; open(el, d); }; act.appendChild(btn); }
+    top.appendChild(act); el.appendChild(top);
+
+    var chips = document.createElement('div'); chips.className = 'chips';
+    d.reasons.forEach(function (r) { var c = document.createElement('span'); c.className = 'chip' + (r.hot ? ' hot' : ''); c.textContent = r.text; chips.appendChild(c); });
+    el.appendChild(chips);
+    var facts = document.createElement('p'); facts.className = 'facts';
+    var bits = [];
+    if (m.last_from) bits.push('Last recognised by ' + m.last_from + (m.last_value ? ' for ' + m.last_value.toLowerCase() : ''));
+    else bits.push('No recognition on record');
+    bits.push(plural(m.received_90d, 'recognition') + ' in 90 days');
+    facts.textContent = bits.join(' · '); el.appendChild(facts);
+    return el;
+  }
+
+  function open(el, d) {
+    var m = d.m, wrap = document.createElement('div'); wrap.className = 'draft';
+    wrap.innerHTML =
+      '<div class="cols"><div><label>Tone</label><select class="tone"><option value="warm">Warm</option><option value="brief">Brief</option></select></div>' +
+      '<div><label>One thing you noticed (optional)</label><input type="text" class="note" maxlength="200" placeholder="e.g. stayed late to fix the release"></div></div>' +
+      '<label style="margin-top:8px">Message (edit freely)</label><textarea class="msg" aria-label="Draft message"></textarea>' +
+      '<div class="row"><button class="regen">Redraft</button><button class="primary send">Send (demo)</button><span class="src"></span></div>';
+    el.appendChild(wrap);
+    var tone = wrap.querySelector('.tone'), note = wrap.querySelector('.note'), msg = wrap.querySelector('.msg'),
+        src = wrap.querySelector('.src'), regen = wrap.querySelector('.regen'), send = wrap.querySelector('.send');
+    var original = '';
+
+    function draft() {
+      regen.disabled = send.disabled = true; src.textContent = 'Drafting…';
+      var facts = { first: first(m.name), level: m.level, years: m.years, topValue: m.top_value, received: m.received_90d, daysSince: m.days_since, note: note.value.trim() };
+      fetch('/api/draft', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reason: d.main, tone: tone.value, facts: facts }) })
+        .then(function (r) { if (!r.ok) throw new Error('ai'); return r.json(); })
+        .then(function (j) { done(j.draft, 'Drafted by Claude · check before sending'); })
+        .catch(function () {
+          var t = template(d.main, m, tone.value);
+          if (note.value.trim()) t += ' ' + note.value.trim().replace(/^./, function (c) { return c.toUpperCase(); }) + (/[.!?]$/.test(note.value.trim()) ? '' : '.');
+          done(t, 'Template (AI unavailable)');
+        });
+    }
+    function done(text, label) { msg.value = text; original = text; src.textContent = label; regen.disabled = send.disabled = false; state.drafted++; stats(); }
+    regen.onclick = draft; tone.onchange = draft;
+    send.onclick = function () {
+      state.sent++; if (msg.value.trim() !== original.trim()) state.edited++;
+      state.done[m.id] = true; stats(); render();
+    };
+    draft();
+  }
+
+  function stats() { $('sDraft').textContent = state.drafted; $('sEdit').textContent = state.edited; $('sSent').textContent = state.sent; }
+  render();
+})();
+</script>
+
+</body></html>

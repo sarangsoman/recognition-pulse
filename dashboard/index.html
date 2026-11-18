@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recognition Pulse</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one calm reading column of analysis blocks, summary first, detail after.
+   Color: neutral page, one blue for the thing being measured, gray for comparison.
+   Type: system sans only, so numbers stay plain and legible. */
+:root {
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10);
+  --blue: #2a78d6; --gray: #8f8e87; --wash: rgba(42,120,214,0.10);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+    --blue: #3987e5; --gray: #8a8984; --wash: rgba(57,135,229,0.14);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+  --blue: #3987e5; --gray: #8a8984; --wash: rgba(57,135,229,0.14);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--page); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.5;
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+main { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+h1 { font-size: 30px; line-height: 1.15; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h2 { font-size: 18px; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.sub { color: var(--ink2); max-width: 70ch; margin-top: 8px; }
+.badge { display: inline-block; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink2);
+  border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; margin-top: 14px; background: var(--surface); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.card > header { display: flex; flex-direction: column; gap: 4px; }
+.note { color: var(--ink2); font-size: 13px; max-width: 78ch; }
+.grid { display: grid; gap: 14px; }
+.kpis { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.two { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
+.kpi .v { font-size: 34px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+.kpi .l { font-size: 13px; color: var(--ink); font-weight: 600; }
+.kpi .d { font-size: 12.5px; color: var(--ink2); }
+.chart { width: 100%; min-width: 0; position: relative; }
+svg text { font-family: var(--font); }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink2); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.frow { display: grid; grid-template-columns: minmax(120px, 190px) 1fr; gap: 12px; align-items: center; padding: 6px 0; }
+.frow .nm { font-size: 14px; color: var(--ink2); }
+.ftrack { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.fbar { height: 22px; background: var(--blue); border-radius: 0 4px 4px 0; flex: none; }
+.fbar:focus-visible, .bar:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.fval { font-size: 14px; white-space: nowrap; }
+.fval b { font-weight: 600; }
+.fval span { color: var(--ink2); }
+.tw { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th { font-size: 12px; color: var(--ink2); font-weight: 600; letter-spacing: 0.02em; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.meter { display: inline-flex; align-items: center; gap: 8px; min-width: 150px; }
+.meter .tr { width: 90px; height: 8px; background: var(--grid); border-radius: 4px; overflow: hidden; flex: none; }
+.meter .fl { height: 100%; background: var(--blue); border-radius: 4px 0 0 4px; }
+.meter .mv { font-variant-numeric: tabular-nums; min-width: 44px; }
+.pill { font-size: 12px; border: 1px solid var(--border); border-radius: 999px; padding: 1px 8px; color: var(--ink2); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.stat { border-top: 1px solid var(--grid); padding-top: 10px; display: flex; flex-direction: column; gap: 2px; }
+.stat b { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+.stat span { font-size: 13px; color: var(--ink2); }
+.verdict { border-left: 3px solid var(--blue); padding: 2px 0 2px 12px; font-size: 14.5px; max-width: 78ch; }
+details summary { cursor: pointer; font-size: 13px; color: var(--ink2); }
+#tip { position: fixed; z-index: 50; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--axis);
+  border-radius: 8px; padding: 8px 10px; font-size: 13px; box-shadow: 0 4px 16px rgba(0,0,0,0.14); display: none; max-width: 260px; }
+#tip .t { color: var(--ink2); margin-bottom: 4px; }
+#tip .r { display: flex; align-items: center; gap: 8px; }
+#tip .r i { width: 14px; height: 2px; flex: none; }
+#tip .r b { font-weight: 600; }
+#tip .r span { color: var(--ink2); }
+footer { color: var(--ink2); font-size: 13px; max-width: 80ch; }
+footer p + p { margin-top: 8px; }
+@media (max-width: 520px) {
+  h1 { font-size: 25px; }
+  .frow { grid-template-columns: 1fr; gap: 4px; }
+  .kpi .v { font-size: 30px; }
+}
+@media (prefers-reduced-motion: no-preference) { .fbar, .bar { transition: opacity 120ms; } }
+</style>
+
+<main>
+  <div>
+    <h1>Recognition Pulse</h1>
+    <p class="sub">How I would read the health of an employee recognition program: who joins in, who goes quiet, and whether a change worked.</p>
+    <span class="badge">Synthetic data · 600 employees · 1 Jun to 15 Nov 2026</span>
+  </div>
+
+  <section class="grid kpis" id="kpis" aria-label="Headline numbers"></section>
+
+  <section class="card">
+    <header><h2>Where people drop off</h2>
+      <p class="note" id="funnelNote"></p></header>
+    <div id="funnel"></div>
+  </section>
+
+  <section class="card">
+    <header><h2>Share of people active each week</h2>
+      <p class="note">Employees who sent or received a recognition that week, out of everyone invited so far. Rollout ran in three waves, so week 1 is partial.</p></header>
+    <div class="chart" id="line"></div>
+    <details><summary>Table view</summary><div class="tw"><table id="lineTable"></table></div></details>
+  </section>
+
+  <section class="card">
+    <header><h2>Departments</h2>
+      <p class="note">Sorted with the quietest first. Manager rate is the share of manager-weeks with at least one recognition sent, over the last 6 weeks.</p></header>
+    <div class="tw"><table id="deptTable"></table></div>
+  </section>
+
+  <section class="card" id="ab">
+    <header><h2>Test: does a weekly manager nudge raise manager recognition?</h2>
+      <p class="note" id="abNote"></p></header>
+    <div class="grid two">
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+        <div class="legend"><span><i style="background:var(--gray)"></i>Control teams</span><span><i style="background:var(--blue)"></i>Nudge teams</span></div>
+        <div class="chart" id="cols"></div>
+        <p class="note">Share of manager-weeks with at least one recognition sent.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+        <div class="note" style="color:var(--ink);font-weight:600">Effect of the nudge, adjusted for each manager's earlier rate</div>
+        <div class="chart" id="forest"></div>
+        <p class="note">Percentage points, nudge minus control, with a 95% confidence interval.</p>
+      </div>
+    </div>
+    <div class="stats" id="abStats"></div>
+    <p class="verdict" id="abVerdict"></p>
+  </section>
+
+  <section class="grid two">
+    <div class="card">
+      <header><h2>Who receives recognition</h2>
+        <p class="note">Recognition is not spread evenly across the company.</p></header>
+      <div class="stats" id="incl"></div>
+    </div>
+    <div class="card">
+      <header><h2>Rewards and delivery</h2>
+        <p class="note" id="rewNote"></p></header>
+      <div class="tw"><table id="rewTable"></table></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <header><h2>Teams a nudge would help most</h2>
+      <p class="note">The ten teams with the lowest share of people recognised in the last 30 days.</p></header>
+    <div class="tw"><table id="quietTable"></table></div>
+  </section>
+
+  <footer>
+    <p><b>About this data.</b> Every number here comes from a dataset I generated with a script, not from a real company. The shape follows how recognition platforms are described publicly: employees synced from an HR system, peer and manager recognition with points, redemptions, and an automatic milestone feed.</p>
+    <p>The nudge test is planted: I chose its effect when generating the data, so the page shows how I analyse a test, not what a real test would find. Reproduce it with <code>generate_data.py</code> and <code>build_dashboard_data.py</code>.</p>
+  </footer>
+</main>
+<div id="tip" role="status"></div>
+<script id="data" type="application/json">{"asof":"2026-11-15","kpis":{"employees":600,"login_rate":0.808,"participation_30d":0.637,"manager_coverage_30d":0.657,"recognised_share_30d":0.555,"recognitions_total":4117,"human_recognitions_30d":558,"redeemers_share":0.398,"instant_share":0.515,"avg_standard_delivery_days":5.8},"weekly":[{"week":"2026-06-01","recognitions":58,"active_share":0.372,"ai_share":0.0},{"week":"2026-06-08","recognitions":196,"active_share":0.441,"ai_share":0.0},{"week":"2026-06-15","recognitions":189,"active_share":0.482,"ai_share":0.0},{"week":"2026-06-22","recognitions":218,"active_share":0.415,"ai_share":0.0},{"week":"2026-06-29","recognitions":209,"active_share":0.41,"ai_share":0.0},{"week":"2026-07-06","recognitions":189,"active_share":0.384,"ai_share":0.0},{"week":"2026-07-13","recognitions":147,"active_share":0.333,"ai_share":0.0},{"week":"2026-07-20","recognitions":173,"active_share":0.357,"ai_share":0.0},{"week":"2026-07-27","recognitions":158,"active_share":0.36,"ai_share":0.342},{"week":"2026-08-03","recognitions":151,"active_share":0.332,"ai_share":0.331},{"week":"2026-08-10","recognitions":141,"active_share":0.325,"ai_share":0.376},{"week":"2026-08-17","recognitions":123,"active_share":0.275,"ai_share":0.285},{"week":"2026-08-24","recognitions":137,"active_share":0.339,"ai_share":0.365},{"week":"2026-08-31","recognitions":137,"active_share":0.307,"ai_share":0.292},{"week":"2026-09-07","recognitions":157,"active_share":0.33,"ai_share":0.395},{"week":"2026-09-14","recognitions":132,"active_share":0.32,"ai_share":0.303},{"week":"2026-09-21","recognitions":141,"active_share":0.33,"ai_share":0.362},{"week":"2026-09-28","recognitions":145,"active_share":0.298,"ai_share":0.434},{"week":"2026-10-05","recognitions":132,"active_share":0.289,"ai_share":0.417},{"week":"2026-10-12","recognitions":138,"active_share":0.301,"ai_share":0.355},{"week":"2026-10-19","recognitions":124,"active_share":0.298,"ai_share":0.306},{"week":"2026-10-26","recognitions":147,"active_share":0.328,"ai_share":0.354},{"week":"2026-11-02","recognitions":142,"active_share":0.318,"ai_share":0.366},{"week":"2026-11-09","recognitions":136,"active_share":0.302,"ai_share":0.279}],"funnel":[{"stage":"Invited via HRMS sync","count":600},{"stage":"Logged in","count":485},{"stage":"Sent a first recognition","count":289},{"stage":"Redeemed points","count":193}],"funnel_extra":{"sent_within_7d_of_login":153,"median_days_login_to_first_send":6.0},"departments":[{"department":"Support","headcount":80,"login_rate":0.675,"participation_30d":0.438,"manager_weekly_rate":0.167,"sent_per_head_month":0.4},{"department":"IT and Legal","headcount":30,"login_rate":0.7,"participation_30d":0.5,"manager_weekly_rate":0.25,"sent_per_head_month":0.47},{"department":"Finance","headcount":35,"login_rate":0.629,"participation_30d":0.6,"manager_weekly_rate":0.167,"sent_per_head_month":0.71},{"department":"Operations","headcount":60,"login_rate":0.783,"participation_30d":0.617,"manager_weekly_rate":0.175,"sent_per_head_month":0.63},{"department":"Engineering","headcount":150,"login_rate":0.807,"participation_30d":0.647,"manager_weekly_rate":0.198,"sent_per_head_month":1.01},{"department":"Product","headcount":40,"login_rate":0.85,"participation_30d":0.65,"manager_weekly_rate":0.278,"sent_per_head_month":1.15},{"department":"HR","headcount":25,"login_rate":0.96,"participation_30d":0.68,"manager_weekly_rate":0.444,"sent_per_head_month":1.28},{"department":"Marketing","headcount":50,"login_rate":0.94,"participation_30d":0.68,"manager_weekly_rate":0.167,"sent_per_head_month":0.88},{"department":"Design","headcount":30,"login_rate":0.867,"participation_30d":0.733,"manager_weekly_rate":0.111,"sent_per_head_month":1.2},{"department":"Sales","headcount":100,"login_rate":0.89,"participation_30d":0.78,"manager_weekly_rate":0.242,"sent_per_head_month":1.4}],"quiet_teams":[{"team":"ITL-02","department":"IT and Legal","headcount":10,"recognised_30d":0.1,"manager_sent_30d":false,"variant":"control"},{"team":"ENG-06","department":"Engineering","headcount":9,"recognised_30d":0.111,"manager_sent_30d":false,"variant":"nudge"},{"team":"ENG-03","department":"Engineering","headcount":9,"recognised_30d":0.222,"manager_sent_30d":true,"variant":"control"},{"team":"OPE-06","department":"Operations","headcount":8,"recognised_30d":0.25,"manager_sent_30d":false,"variant":"control"},{"team":"SAL-11","department":"Sales","headcount":9,"recognised_30d":0.333,"manager_sent_30d":false,"variant":"nudge"},{"team":"SUP-04","department":"Support","headcount":9,"recognised_30d":0.333,"manager_sent_30d":false,"variant":"nudge"},{"team":"SUP-06","department":"Support","headcount":9,"recognised_30d":0.333,"manager_sent_30d":false,"variant":"control"},{"team":"SUP-08","department":"Support","headcount":9,"recognised_30d":0.333,"manager_sent_30d":false,"variant":"nudge"},{"team":"ENG-01","department":"Engineering","headcount":9,"recognised_30d":0.333,"manager_sent_30d":true,"variant":"nudge"},{"team":"ENG-10","department":"Engineering","headcount":9,"recognised_30d":0.333,"manager_sent_30d":true,"variant":"control"}],"inclusion":{"gini":0.64,"top10_share":0.449,"never_recognised_share":0.188},"rewards":[{"category":"Charity donation","redemptions":22.0,"avg_delivery_days":1.09,"instant":0.73},{"category":"Experience","redemptions":34.0,"avg_delivery_days":7.06,"instant":0.0},{"category":"Gift card","redemptions":146.0,"avg_delivery_days":0.99,"instant":0.82},{"category":"Merchandise","redemptions":33.0,"avg_delivery_days":6.45,"instant":0.0},{"category":"Wellness","redemptions":29.0,"avg_delivery_days":4.28,"instant":0.0}],"ab":{"teams":{"control":33,"nudge":34},"managers_analysed":56,"pre":{"control":0.213,"nudge":0.176},"post":{"control":0.181,"nudge":0.25},"did_pp":10.6,"ancova_effect_pp":8.9,"ancova_ci_pp":[1.7,16.0],"ancova_p":0.016,"raw_post_diff_pp":6.9,"raw_p":0.122,"mde_pp":12.9,"team_coverage_end":{"control":0.547,"nudge":0.562},"message_words_post":{"control":20.7,"nudge":19.7}},"ai":{"share_after_launch":0.349,"words_ai":27.6,"words_manual":16.4},"channels":{"Slack":0.367,"Microsoft Teams":0.276,"Web":0.203,"Mobile":0.154}}</script>
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('data').textContent);
+  var NS = 'http://www.w3.org/2000/svg';
+  var pct = function (x, d) { return (x * 100).toFixed(d === undefined ? 1 : d) + '%'; };
+  var num = function (x) { return Number(x).toLocaleString('en-IN'); };
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+  function sv(tag, attrs, text) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  var cssv = function (n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); };
+
+  /* ---------- tooltip ---------- */
+  var tip = document.getElementById('tip');
+  function showTip(x, y, title, rows) {
+    while (tip.firstChild) tip.removeChild(tip.firstChild);
+    if (title) tip.appendChild(el('div', 't', title));
+    rows.forEach(function (r) {
+      var row = el('div', 'r');
+      if (r.key) { var k = el('i'); k.style.background = r.key; row.appendChild(k); }
+      row.appendChild(el('b', '', r.value));
+      row.appendChild(el('span', '', r.label));
+      tip.appendChild(row);
+    });
+    tip.style.display = 'block';
+    var w = tip.offsetWidth, h = tip.offsetHeight;
+    var left = Math.min(Math.max(8, x + 14), window.innerWidth - w - 8);
+    var top = y - h - 12 < 8 ? y + 18 : y - h - 12;
+    tip.style.left = left + 'px'; tip.style.top = top + 'px';
+  }
+  function hideTip() { tip.style.display = 'none'; }
+  function anchorOf(node) { var b = node.getBoundingClientRect(); return [b.left + b.width / 2, b.top]; }
+
+  /* ---------- KPIs ---------- */
+  var K = D.kpis;
+  [
+    [pct(K.participation_30d), 'Participation, last 30 days', 'Sent or received at least one recognition'],
+    [pct(K.manager_coverage_30d), 'Manager coverage', 'Managers who recognised someone in 30 days'],
+    [pct(K.recognised_share_30d), 'People recognised', 'Received at least one in 30 days, automatic milestones included'],
+    [pct(K.redeemers_share), 'Redeemed points', 'Of employees who have logged in']
+  ].forEach(function (k) {
+    var c = el('div', 'kpi'); c.appendChild(el('div', 'l', k[1])); c.appendChild(el('div', 'v', k[0])); c.appendChild(el('div', 'd', k[2]));
+    document.getElementById('kpis').appendChild(c);
+  });
+
+  /* ---------- funnel ---------- */
+  var F = D.funnel, top = F[0].count, fx = D.funnel_extra;
+  var fwrap = document.getElementById('funnel');
+  F.forEach(function (s, i) {
+    var row = el('div', 'frow');
+    row.appendChild(el('div', 'nm', s.stage));
+    var tr = el('div', 'ftrack');
+    var bar = el('div', 'fbar bar'); bar.tabIndex = 0;
+    bar.style.width = 'calc((100% - 160px) * ' + (s.count / top) + ')';
+    bar.style.minWidth = '4px';
+    var val = el('div', 'fval');
+    var b = el('b', '', num(s.count)); val.appendChild(b);
+    val.appendChild(el('span', '', '  ' + pct(s.count / top, 0) + (i > 0 ? ' of invited' : '')));
+    tr.appendChild(bar); tr.appendChild(val); row.appendChild(tr);
+    var rows = [{ value: num(s.count), label: 'people' }, { value: pct(s.count / top), label: 'of everyone invited' }];
+    if (i > 0) rows.push({ value: pct(s.count / F[i - 1].count), label: 'of the stage before' });
+    var go = function (ev) { var a = ev.clientX ? [ev.clientX, ev.clientY] : anchorOf(bar); showTip(a[0], a[1], s.stage, rows); };
+    bar.addEventListener('pointermove', go); bar.addEventListener('focus', go);
+    bar.addEventListener('pointerleave', hideTip); bar.addEventListener('blur', hideTip);
+    fwrap.appendChild(row);
+  });
+  document.getElementById('funnelNote').textContent =
+    'Median ' + fx.median_days_login_to_first_send + ' days from first login to first recognition sent; ' +
+    pct(fx.sent_within_7d_of_login / F[2].count, 0) + ' of senders did it within a week of logging in. The biggest losses are between logging in and sending.';
+
+  /* ---------- line chart ---------- */
+  var W = D.weekly;
+  var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function fmtDay(s) { var d = new Date(s + 'T00:00:00'); return d.getDate() + ' ' + monthNames[d.getMonth()]; }
+  var lineHost = document.getElementById('line'), lineIdx = W.length - 1;
+  function drawLine() {
+    lineHost.textContent = '';
+    var w = Math.max(280, lineHost.clientWidth), h = 280, m = { l: 42, r: 40, t: 34, b: 28 };
+    var svg = sv('svg', { width: w, height: h, viewBox: '0 0 ' + w + ' ' + h, role: 'img', 'aria-label': 'Weekly share of employees active, line chart' });
+    var maxV = Math.max.apply(null, W.map(function (d) { return d.active_share; }));
+    var yMax = Math.ceil(maxV * 10) / 10 + 0.1;
+    var X = function (i) { return m.l + (w - m.l - m.r) * i / (W.length - 1); };
+    var Y = function (v) { return h - m.b - (h - m.t - m.b) * v / yMax; };
+    for (var t = 0; t <= yMax + 1e-9; t += 0.1) {
+      svg.appendChild(sv('line', { x1: m.l, x2: w - m.r, y1: Y(t), y2: Y(t), stroke: t === 0 ? cssv('--axis') : cssv('--grid'), 'stroke-width': 1 }));
+      svg.appendChild(sv('text', { x: m.l - 8, y: Y(t) + 4, 'text-anchor': 'end', 'font-size': 11, fill: cssv('--muted') }, Math.round(t * 100) + '%'));
+    }
+    var lastMonth = -1;
+    W.forEach(function (d, i) {
+      var mo = new Date(d.week + 'T00:00:00').getMonth();
+      if (mo !== lastMonth) { svg.appendChild(sv('text', { x: X(i), y: h - 8, 'text-anchor': 'middle', 'font-size': 11, fill: cssv('--muted') }, monthNames[mo])); lastMonth = mo; }
+    });
+    [[8, 'AI drafting on', 6], [14, 'Nudge test starts', 22]].forEach(function (a) {
+      svg.appendChild(sv('line', { x1: X(a[0]), x2: X(a[0]), y1: m.t - 4, y2: h - m.b, stroke: cssv('--axis'), 'stroke-width': 1 }));
+      svg.appendChild(sv('text', { x: X(a[0]) + 5, y: m.t + a[2], 'font-size': 11, fill: cssv('--ink2') }, a[1]));
+    });
+    var pts = W.map(function (d, i) { return X(i) + ',' + Y(d.active_share); });
+    svg.appendChild(sv('path', { d: 'M' + X(0) + ',' + Y(0) + ' L' + pts.join(' L') + ' L' + X(W.length - 1) + ',' + Y(0) + ' Z', fill: cssv('--wash') }));
+    svg.appendChild(sv('path', { d: 'M' + pts.join(' L'), fill: 'none', stroke: cssv('--blue'), 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    var last = W.length - 1;
+    svg.appendChild(sv('circle', { cx: X(last), cy: Y(W[last].active_share), r: 5, fill: cssv('--blue'), stroke: cssv('--surface'), 'stroke-width': 2 }));
+    svg.appendChild(sv('text', { x: X(last) + 10, y: Y(W[last].active_share) + 4, 'font-size': 12, fill: cssv('--ink') }, pct(W[last].active_share, 0)));
+    var cross = sv('line', { y1: m.t, y2: h - m.b, stroke: cssv('--ink2'), 'stroke-width': 1, visibility: 'hidden' });
+    var dot = sv('circle', { r: 5, fill: cssv('--blue'), stroke: cssv('--surface'), 'stroke-width': 2, visibility: 'hidden' });
+    svg.appendChild(cross); svg.appendChild(dot);
+    var hit = sv('rect', { x: m.l, y: 0, width: w - m.l - m.r, height: h, fill: 'transparent', tabindex: 0 });
+    svg.appendChild(hit); lineHost.appendChild(svg);
+    function at(i) {
+      i = Math.max(0, Math.min(W.length - 1, i)); lineIdx = i;
+      cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.setAttribute('visibility', 'visible');
+      dot.setAttribute('cx', X(i)); dot.setAttribute('cy', Y(W[i].active_share)); dot.setAttribute('visibility', 'visible');
+      var b = svg.getBoundingClientRect();
+      showTip(b.left + X(i), b.top + Y(W[i].active_share), 'Week of ' + fmtDay(W[i].week), [
+        { key: cssv('--blue'), value: pct(W[i].active_share, 0), label: 'of people active' },
+        { value: String(W[i].recognitions), label: 'recognitions sent' },
+        { value: pct(W[i].ai_share, 0), label: 'drafted with AI help' }]);
+    }
+    hit.addEventListener('pointermove', function (ev) {
+      var b = svg.getBoundingClientRect(); var f = (ev.clientX - b.left - m.l) / (w - m.l - m.r);
+      at(Math.round(f * (W.length - 1)));
+    });
+    hit.addEventListener('pointerleave', function () { hideTip(); cross.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); });
+    hit.addEventListener('focus', function () { at(lineIdx); });
+    hit.addEventListener('blur', function () { hideTip(); cross.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); });
+    hit.addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowLeft') { at(lineIdx - 1); ev.preventDefault(); }
+      if (ev.key === 'ArrowRight') { at(lineIdx + 1); ev.preventDefault(); }
+    });
+  }
+  (function () {
+    var t = document.getElementById('lineTable');
+    var hr = el('tr'); ['Week of', 'People active', 'Recognitions', 'AI-assisted'].forEach(function (c, i) { var th = el('th', i ? 'n' : '', c); hr.appendChild(th); });
+    var thd = el('thead'); thd.appendChild(hr); t.appendChild(thd);
+    var tb = el('tbody');
+    W.forEach(function (d) {
+      var r = el('tr'); r.appendChild(el('td', '', fmtDay(d.week)));
+      [pct(d.active_share, 0), String(d.recognitions), pct(d.ai_share, 0)].forEach(function (v) { r.appendChild(el('td', 'n', v)); });
+      tb.appendChild(r);
+    });
+    t.appendChild(tb);
+  })();
+
+  /* ---------- meter-table helper ---------- */
+  function meter(v) {
+    var m = el('span', 'meter'), tr = el('span', 'tr'), fl = el('span', 'fl');
+    fl.style.display = 'block'; fl.style.width = (v * 100) + '%'; tr.appendChild(fl);
+    m.appendChild(tr); m.appendChild(el('span', 'mv', pct(v, 0))); return m;
+  }
+  function buildTable(id, heads, rows) {
+    var t = document.getElementById(id), thd = el('thead'), hr = el('tr');
+    heads.forEach(function (h) { hr.appendChild(el('th', h.n ? 'n' : '', h.t)); });
+    thd.appendChild(hr); t.appendChild(thd);
+    var tb = el('tbody');
+    rows.forEach(function (cells) {
+      var r = el('tr');
+      cells.forEach(function (c, i) {
+        var td = el('td', heads[i].n ? 'n' : '');
+        if (c instanceof Node) td.appendChild(c); else td.textContent = c;
+        r.appendChild(td);
+      });
+      tb.appendChild(r);
+    });
+    t.appendChild(tb);
+  }
+
+  /* ---------- departments ---------- */
+  buildTable('deptTable',
+    [{ t: 'Department' }, { t: 'People', n: 1 }, { t: 'Logged in', n: 1 }, { t: 'Active in last 30 days' }, { t: 'Manager rate', n: 1 }, { t: 'Sent per person, 30 days', n: 1 }],
+    D.departments.map(function (d, i) {
+      var name = el('span'); name.textContent = d.department;
+      if (i < 2) { var p = el('span', 'pill', 'Quietest'); p.style.marginLeft = '8px'; name.appendChild(p); }
+      return [name, String(d.headcount), pct(d.login_rate, 0), meter(d.participation_30d), d.manager_weekly_rate === null ? '-' : pct(d.manager_weekly_rate, 0), d.sent_per_head_month.toFixed(2)];
+    }));
+
+  /* ---------- A/B ---------- */
+  var A = D.ab;
+  document.getElementById('abNote').textContent =
+    'Teams were split at random, balanced by department and by how often each manager recognised before the test (' + A.teams.nudge + ' nudge, ' + A.teams.control + ' control). ' +
+    'Nudge teams got a weekly message naming up to three teammates not recently recognised. Test ran 7 Sep to 15 Nov. ' + A.managers_analysed + ' managers analysed. The effect was planted in the synthetic data.';
+  var colsHost = document.getElementById('cols');
+  function drawCols() {
+    colsHost.textContent = '';
+    var w = Math.max(260, colsHost.clientWidth), h = 250, m = { l: 38, r: 8, t: 22, b: 40 };
+    var svg = sv('svg', { width: w, height: h, viewBox: '0 0 ' + w + ' ' + h, role: 'img', 'aria-label': 'Manager recognition rate before and after, control and nudge teams' });
+    var yMax = 0.3, Y = function (v) { return h - m.b - (h - m.t - m.b) * v / yMax; };
+    [0, 0.1, 0.2, 0.3].forEach(function (t) {
+      svg.appendChild(sv('line', { x1: m.l, x2: w - m.r, y1: Y(t), y2: Y(t), stroke: t === 0 ? cssv('--axis') : cssv('--grid'), 'stroke-width': 1 }));
+      svg.appendChild(sv('text', { x: m.l - 6, y: Y(t) + 4, 'text-anchor': 'end', 'font-size': 11, fill: cssv('--muted') }, Math.round(t * 100) + '%'));
+    });
+    var groups = [['Before the test', A.pre], ['During the test', A.post]];
+    var gw = (w - m.l - m.r) / 2, bw = 24;
+    groups.forEach(function (g, gi) {
+      var cx = m.l + gw * gi + gw / 2;
+      svg.appendChild(sv('text', { x: cx, y: h - 18, 'text-anchor': 'middle', 'font-size': 12, fill: cssv('--ink2') }, g[0]));
+      [['Control', g[1].control, '--gray'], ['Nudge', g[1].nudge, '--blue']].forEach(function (s, si) {
+        var x = cx + (si === 0 ? -bw - 1 : 1), y = Y(s[1]), bh = Y(0) - y, r = 4;
+        var path = 'M' + x + ',' + Y(0) + ' V' + (y + r) + ' Q' + x + ',' + y + ' ' + (x + r) + ',' + y + ' H' + (x + bw - r) + ' Q' + (x + bw) + ',' + y + ' ' + (x + bw) + ',' + (y + r) + ' V' + Y(0) + ' Z';
+        var bar = sv('path', { d: path, fill: cssv(s[2]), tabindex: 0, class: 'bar', 'aria-label': g[0] + ', ' + s[0] + ': ' + pct(s[1]) });
+        svg.appendChild(bar);
+        svg.appendChild(sv('text', { x: x + bw / 2, y: y - 6, 'text-anchor': 'middle', 'font-size': 12, fill: cssv('--ink') }, pct(s[1], 0)));
+        var go = function (ev) { var a = ev.clientX ? [ev.clientX, ev.clientY] : anchorOf(bar); showTip(a[0], a[1], g[0], [{ key: cssv(s[2]), value: pct(s[1]), label: s[0] + ' managers sent weekly' }]); };
+        bar.addEventListener('pointermove', go); bar.addEventListener('focus', go);
+        bar.addEventListener('pointerleave', hideTip); bar.addEventListener('blur', hideTip);
+      });
+    });
+    colsHost.appendChild(svg);
+  }
+  var forestHost = document.getElementById('forest');
+  function drawForest() {
+    forestHost.textContent = '';
+    var w = Math.max(240, forestHost.clientWidth), h = 120, m = { l: 12, r: 16, t: 30, b: 34 };
+    var svg = sv('svg', { width: w, height: h, viewBox: '0 0 ' + w + ' ' + h, role: 'img', 'aria-label': 'Adjusted effect with confidence interval' });
+    var lo = -5, hi = 20, X = function (v) { return m.l + (w - m.l - m.r) * (v - lo) / (hi - lo); }, yc = 56;
+    for (var t = lo; t <= hi; t += 5) {
+      svg.appendChild(sv('line', { x1: X(t), x2: X(t), y1: yc - 20, y2: h - m.b + 4, stroke: t === 0 ? cssv('--ink2') : cssv('--grid'), 'stroke-width': 1 }));
+      svg.appendChild(sv('text', { x: X(t), y: h - 14, 'text-anchor': 'middle', 'font-size': 11, fill: cssv('--muted') }, (t > 0 ? '+' : '') + t));
+    }
+    svg.appendChild(sv('text', { x: X(0) + 5, y: yc - 24, 'font-size': 11, fill: cssv('--ink2') }, 'No effect'));
+    var ci = A.ancova_ci_pp, est = A.ancova_effect_pp;
+    svg.appendChild(sv('line', { x1: X(ci[0]), x2: X(ci[1]), y1: yc, y2: yc, stroke: cssv('--blue'), 'stroke-width': 2, 'stroke-linecap': 'round' }));
+    var pt = sv('circle', { cx: X(est), cy: yc, r: 6, fill: cssv('--blue'), stroke: cssv('--surface'), 'stroke-width': 2, tabindex: 0, class: 'bar', 'aria-label': 'Effect ' + est + ' percentage points' });
+    svg.appendChild(pt);
+    svg.appendChild(sv('text', { x: X(est), y: yc - 14, 'text-anchor': 'middle', 'font-size': 12, fill: cssv('--ink') }, '+' + est + ' pts'));
+    var hitr = sv('rect', { x: X(ci[0]) - 6, y: yc - 16, width: X(ci[1]) - X(ci[0]) + 12, height: 32, fill: 'transparent' });
+    svg.appendChild(hitr);
+    var go = function (ev) { var a = ev.clientX ? [ev.clientX, ev.clientY] : anchorOf(pt); showTip(a[0], a[1], 'Adjusted effect', [{ key: cssv('--blue'), value: '+' + est + ' pts', label: '95% CI +' + ci[0] + ' to +' + ci[1] }, { value: 'p = ' + A.ancova_p, label: 'two-sided' }]); };
+    [hitr, pt].forEach(function (n) { n.addEventListener('pointermove', go); n.addEventListener('pointerleave', hideTip); });
+    pt.addEventListener('focus', go); pt.addEventListener('blur', hideTip);
+    forestHost.appendChild(svg);
+  }
+  var st = document.getElementById('abStats');
+  [
+    ['+' + A.ancova_effect_pp + ' pts', 'Adjusted effect on manager recognition, 95% CI +' + A.ancova_ci_pp[0] + ' to +' + A.ancova_ci_pp[1] + ', p = ' + A.ancova_p],
+    ['+' + A.raw_post_diff_pp + ' pts', 'Raw gap after launch, p = ' + A.raw_p + '. Not clear on its own, because managers differ a lot from the start'],
+    ['±' + A.mde_pp + ' pts', 'Smallest raw gap this test could reliably detect with ' + A.teams.control + ' teams a side'],
+    [pct(A.team_coverage_end.nudge, 1) + ' vs ' + pct(A.team_coverage_end.control, 1), 'Teammates recognised in the last 30 days, nudge vs control. No clear change'],
+    [A.message_words_post.nudge + ' vs ' + A.message_words_post.control, 'Words per message, nudge vs control, so the nudge did not produce thinner messages']
+  ].forEach(function (s) { var d = el('div', 'stat'); d.appendChild(el('b', '', s[0])); d.appendChild(el('span', '', s[1])); st.appendChild(d); });
+  document.getElementById('abVerdict').textContent =
+    'Read: the nudge made managers recognise more often, but it has not yet widened who gets recognised. Next test: a longer run, with the nudge carrying a ready draft the manager can send in one tap.';
+
+  /* ---------- inclusion and rewards ---------- */
+  var I = D.inclusion, ih = document.getElementById('incl');
+  [[pct(I.top10_share, 0), 'of all recognition goes to the 10% of people who receive the most'],
+   [pct(I.never_recognised_share, 0), 'of people who logged in have never been recognised by a colleague or manager'],
+   [I.gini.toFixed(2), 'Gini index of recognition received (0 is perfectly even, 1 is all to one person)']
+  ].forEach(function (s) { var d = el('div', 'stat'); d.appendChild(el('b', '', s[0])); d.appendChild(el('span', '', s[1])); ih.appendChild(d); });
+  document.getElementById('rewNote').textContent =
+    pct(K.instant_share, 0) + ' of redemptions are delivered instantly; the rest average ' + K.avg_standard_delivery_days + ' days. Slow categories are where users wait longest after earning points.';
+  buildTable('rewTable',
+    [{ t: 'Reward' }, { t: 'Redemptions', n: 1 }, { t: 'Instant', n: 1 }, { t: 'Avg days to deliver', n: 1 }],
+    D.rewards.slice().sort(function (a, b) { return b.redemptions - a.redemptions; }).map(function (r) {
+      return [r.category, String(r.redemptions), pct(r.instant, 0), r.avg_delivery_days.toFixed(1)];
+    }));
+
+  /* ---------- quiet teams ---------- */
+  buildTable('quietTable',
+    [{ t: 'Team' }, { t: 'Department' }, { t: 'People', n: 1 }, { t: 'Recognised in last 30 days' }, { t: 'Manager sent' }, { t: 'Test group' }],
+    D.quiet_teams.map(function (t) {
+      return [t.team, t.department, String(t.headcount), meter(t.recognised_30d), t.manager_sent_30d ? 'Yes' : 'No', t.variant === 'nudge' ? 'Nudge' : 'Control'];
+    }));
+
+  /* ---------- draw and keep sized ---------- */
+  function drawAll() { drawLine(); drawCols(); drawForest(); }
+  drawAll();
+  var ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(function () { drawAll(); }) : null;
+  if (ro) { ro.observe(lineHost); ro.observe(colsHost); ro.observe(forestHost); }
+  if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', drawAll);
+  new MutationObserver(drawAll).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+</script>
+
+</body></html>
